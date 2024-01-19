@@ -14,7 +14,7 @@ import java.util.List;
 public abstract class ProductMapper {
     public static final ProductMapper INSTANCE = Mappers.getMapper(ProductMapper.class);
 
-    @Mapping(target = "id", ignore = true)
+    @Mapping(source = "id", target = "id")
     @Mapping(source = "name", target = "name")
     @Mapping(source = "description", target = "description")
     @Mapping(source = "price", target = "price")
@@ -25,11 +25,13 @@ public abstract class ProductMapper {
     @Mapping(source = "price", target = "price")
     public abstract Product toDomain(ProductPostRequestDto dto);
 
+    @Mapping(source = "id", target = "id")
     @Mapping(source = "name", target = "name")
     @Mapping(source = "description", target = "description")
     @Mapping(source = "price", target = "price")
     public abstract Product toDomain(ProductEntity dto);
 
+    @Mapping(source = "id", target = "id")
     @Mapping(source = "name", target = "name")
     @Mapping(source = "description", target = "description")
     @Mapping(source = "price", target = "price")

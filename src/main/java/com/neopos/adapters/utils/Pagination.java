@@ -8,43 +8,34 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
-public class Pagination<T> {
-    private final static int DEFAULT_PAGE_NUMBER = 0;
-    private final static int DEFAULT_PAGE_SIZE = 25;
-    public PagedListHolder<T> build(Integer pageNumber, Integer pageSize, List<T> object) {
-        int queryPageNumber;
-        int queryPageSize;
-        PagedListHolder<T> page = new PagedListHolder<>(object);
+public class Pagination {
+    public final static int DEFAULT_PAGE_NUMBER = 1;
+    public final static int DEFAULT_PAGE_SIZE = 10;
 
+    public static Integer validatePageNumber(Integer pageNumber) {
         if(pageNumber != null && pageNumber > 0) {
-            queryPageNumber = pageNumber - 1;
+            return pageNumber;
         } else {
-            queryPageNumber = DEFAULT_PAGE_NUMBER;
+            return DEFAULT_PAGE_NUMBER;
         }
+    }
 
-        if(pageSize != null && pageSize > 0 && pageSize < 30) {
-            queryPageSize = pageSize;
+    public static Integer validatePageSize(Integer pageSize) {
+        int queryPageSize;
+
+        if(pageSize != null && pageSize > 0) {
+            if (pageSize <= 50) {
+                queryPageSize = pageSize;
+            } else {
+                queryPageSize = 50;
+            }
         } else {
             queryPageSize = DEFAULT_PAGE_SIZE;
         }
 
-        page.setPage(queryPageNumber);
-        page.setPageSize(queryPageSize);
-
-        return page;
+        return queryPageSize;
     }
 
-    public Map<String, String> buildPageLinks(PagedListHolder<T> page) {
-        Map<String, String> links = new HashMap<>();
-
-
-        links.put("self", "");
-        links.put("prev", "");
-        links.put("next", "");
-        links.put("first", "");
-        links.put("last", Integer.toString(page.getPageCount()));
-
-        return links;
-    }
 }

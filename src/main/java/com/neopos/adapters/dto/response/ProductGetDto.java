@@ -1,5 +1,6 @@
 package com.neopos.adapters.dto.response;
 
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -14,8 +15,11 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-public class ProductGetDto {
+@JsonPropertyOrder({"id", "name", "price", "description", "links"})
+public class ProductGetDto extends ResponseWithLinks {
+    private String id;
     private String name;
-    private String description;
     private BigDecimal price;
+    private String description;
+
 }

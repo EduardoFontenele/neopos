@@ -2,7 +2,6 @@ package com.neopos.adapters.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.neopos.adapters.dto.request.ProductPostRequestDto;
-import com.neopos.adapters.dto.response.ProductGetDto;
 import com.neopos.adapters.mapper.ProductMapper;
 import com.neopos.application.core.domain.Product;
 import com.neopos.application.ports.input.FindProductsInputPort;
@@ -58,7 +57,7 @@ class ProductControllerTest {
     @DisplayName("Given a valid GET request, should return a page of Products")
     void listProducts_shouldReturnOk() throws Exception {
         List<Product> productGetDtos = new ArrayList<>();
-        given(findProductsInputPort.listProducts()).willReturn(productGetDtos);
+        given(findProductsInputPort.findAll(1, 1)).willReturn(productGetDtos);
 
         mockMvc.perform(get("/api/v1/products")
                 .contentType(MediaType.APPLICATION_JSON))

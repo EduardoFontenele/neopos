@@ -5,5 +5,5 @@ import com.neopos.application.core.domain.Product;
 import java.util.List;
 
 public interface FindProductsInputPort {
-    List<Product> listProducts();
+    List<Product> findAll(int pageNumber, int pageSize);
 }

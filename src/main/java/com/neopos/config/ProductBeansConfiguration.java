@@ -1,9 +1,9 @@
 package com.neopos.config;
 
-import com.neopos.adapters.service.CountProductsAdapter;
-import com.neopos.adapters.service.FindProductByIdAdapter;
-import com.neopos.adapters.service.FindProductsAdapter;
-import com.neopos.adapters.service.InsertProductAdapter;
+import com.neopos.adapter.service.CountProductsAdapter;
+import com.neopos.adapter.service.FindProductByIdAdapter;
+import com.neopos.adapter.service.FindProductsAdapter;
+import com.neopos.adapter.service.InsertProductAdapter;
 import com.neopos.application.core.usecase.FindProductByIdUseCase;
 import com.neopos.application.core.usecase.FindProductsUseCase;
 import com.neopos.application.core.usecase.InsertProductUseCase;

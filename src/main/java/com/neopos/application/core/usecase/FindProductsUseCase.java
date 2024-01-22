@@ -23,6 +23,7 @@ public class FindProductsUseCase implements FindProductsInputPort {
         double totalRecords = countProductsOutputPort.count();
         int totalPages = (int) Math.ceil(totalRecords / pageSize);
 
+
         // Usually, a pagination will start at 0, so if you want a page N, it's actually N - 1 that will be queried
         if(pageNumber > totalPages) {
             queryPageNumber = totalPages - 1;

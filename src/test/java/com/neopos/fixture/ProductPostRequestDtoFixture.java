@@ -1,15 +1,15 @@
 package com.neopos.fixture;
 
-import com.neopos.adapters.dto.request.ProductPostRequestDto;
+import com.neopos.adapter.dto.request.ProductPostRequestDto;
 
 import java.math.BigDecimal;
 
 public class ProductPostRequestDtoFixture {
-    public static ProductPostRequestDto createDefault() {
+    public static ProductPostRequestDto gimmeSingleProductPostDto() {
         ProductPostRequestDto productDto = new ProductPostRequestDto();
-        productDto.setName("Default Product");
-        productDto.setDescription("Default Product Description");
-        productDto.setPrice(BigDecimal.valueOf(99.99));
+        productDto.setName("Example Product");
+        productDto.setDescription("This is a sample product.");
+        productDto.setPrice(new BigDecimal("19.99"));
         return productDto;
     }
 

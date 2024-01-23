@@ -1,14 +1,13 @@
-package com.neopos.adapter.utils.metabuilders;
+package com.neopos.adapter.utils;
 
 import com.neopos.adapter.dto.response.Meta;
-import com.neopos.adapter.utils.Pagination;
 import com.neopos.application.ports.output.CountProductsOutputPort;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 @RequiredArgsConstructor
 @Service
-public class ProductsMetaBuilder {
+public class ProductMetaBuilder {
 
     private final CountProductsOutputPort productRepository;
 

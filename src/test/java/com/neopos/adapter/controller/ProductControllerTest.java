@@ -4,9 +4,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.neopos.adapter.dto.request.ProductPostRequestDto;
 import com.neopos.adapter.dto.response.Meta;
 import com.neopos.adapter.dto.response.ProductGetDto;
-import com.neopos.adapter.mapper.ProductMapper;
-import com.neopos.adapter.utils.LinkBuilder;
-import com.neopos.adapter.utils.metabuilders.ProductsMetaBuilder;
+import com.neopos.adapter.dto.response.Response;
+import com.neopos.adapter.utils.ProductFactories;
 import com.neopos.application.core.domain.Product;
 import com.neopos.application.ports.input.FindProductByIdInputPort;
 import com.neopos.application.ports.input.FindProductsInputPort;
@@ -23,6 +22,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import static org.hamcrest.Matchers.hasSize;
@@ -44,11 +44,7 @@ class ProductControllerTest {
     @MockBean
     private FindProductByIdInputPort findProductByIdInputPort;
     @MockBean
-    private ProductMapper productMapper;
-    @MockBean
-    private LinkBuilder linkBuilder;
-    @MockBean
-    private ProductsMetaBuilder productsMetaBuilder;
+    private ProductFactories productFactories;
     @Autowired
     private MockMvc mockMvc;
 
@@ -73,7 +69,6 @@ class ProductControllerTest {
         dto.setName("");
         String json = objectMapper.writeValueAsString(dto);
 
-
         mockMvc.perform(post("/api/v1/products")
                         .accept(MediaType.APPLICATION_JSON)
                         .contentType(MediaType.APPLICATION_JSON)
@@ -89,10 +84,10 @@ class ProductControllerTest {
         Meta meta = MetaFixture.gimmeMeta();
         List<ProductGetDto> data = ProductFixture.gimmeProductGetDtoList();
         List<Product> productList = ProductFixture.gimmeProductList();
+        Response<List<ProductGetDto>> response = new Response<>(data, meta, new HashMap<>());
 
         given(findProductsInputPort.findAll(queryPageNumber, queryPageSize)).willReturn(productList);
-        given(productMapper.toGetDtoList(productList)).willReturn(data);
-        given(productsMetaBuilder.build(queryPageSize, queryPageNumber)).willReturn(meta);
+        given(productFactories.buildPagedResponse(productList, queryPageNumber, queryPageSize)).willReturn(response);
 
         mockMvc.perform(get("/api/v1/products?page-number=1&page-size=3"))
                 .andExpect(status().isOk())
@@ -109,13 +104,10 @@ class ProductControllerTest {
     void givenValidPageNumberAndSize_whenListAllMethodIsCalled_shouldReturn200AndPageOfProducts() throws Exception {
         int queryPageNumber = 1;
         int queryPageSize = 3;
-        Meta meta = MetaFixture.gimmeMeta();
-        List<ProductGetDto> data = new ArrayList<>();
-        List<Product> productList = new ArrayList<>();
+        Response<List<ProductGetDto>> response = new Response<>(new ArrayList<>(), new Meta(), new HashMap<>());
 
-        given(findProductsInputPort.findAll(queryPageNumber, queryPageSize)).willReturn(productList);
-        given(productMapper.toGetDtoList(productList)).willReturn(data);
-        given(productsMetaBuilder.build(queryPageSize, queryPageNumber)).willReturn(meta);
+        given(findProductsInputPort.findAll(queryPageNumber, queryPageSize)).willReturn(new ArrayList<>());
+        given(productFactories.buildPagedResponse(new ArrayList<>(), queryPageNumber, queryPageSize)).willReturn(response);
 
         mockMvc.perform(get("/api/v1/products?page-number=1&page-size=3"))
                 .andExpect(status().isOk())
@@ -126,4 +118,17 @@ class ProductControllerTest {
                 .andExpect(jsonPath("$.data", hasSize(0)));
     }
 
+    @Test
+    @DisplayName("Given valid ID, when findById called, should return 200 and a ProductGetDto")
+    void givenValidId_whenFindById_thenReturnProductGetDto() throws Exception {
+        ProductGetDto productGetDto = ProductFixture.gimmeSingleProductGetDto();
+        Product product = ProductFixture.gimmeSingleProduct();
+
+        given(findProductByIdInputPort.findById(productGetDto.getId())).willReturn(product);
+        given(productFactories.buildSingleResponse(product, product.getId())).willReturn(productGetDto);
+
+        mockMvc.perform(get("/api/v1/products/1"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id", is(productGetDto.getId())));
+    }
 }

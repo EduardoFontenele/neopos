@@ -86,7 +86,7 @@ class ProductControllerTest {
         List<Product> productList = ProductFixture.gimmeProductList();
         Response<List<ProductGetDto>> response = new Response<>(data, meta, new HashMap<>());
 
-        given(findProductsInputPort.findAll(queryPageNumber, queryPageSize)).willReturn(productList);
+        given(findProductsInputPort.execute(queryPageNumber, queryPageSize)).willReturn(productList);
         given(productFactories.buildPagedResponse(productList, queryPageNumber, queryPageSize)).willReturn(response);
 
         mockMvc.perform(get("/api/v1/products?page-number=1&page-size=3"))
@@ -106,7 +106,7 @@ class ProductControllerTest {
         int queryPageSize = 3;
         Response<List<ProductGetDto>> response = new Response<>(new ArrayList<>(), new Meta(), new HashMap<>());
 
-        given(findProductsInputPort.findAll(queryPageNumber, queryPageSize)).willReturn(new ArrayList<>());
+        given(findProductsInputPort.execute(queryPageNumber, queryPageSize)).willReturn(new ArrayList<>());
         given(productFactories.buildPagedResponse(new ArrayList<>(), queryPageNumber, queryPageSize)).willReturn(response);
 
         mockMvc.perform(get("/api/v1/products?page-number=1&page-size=3"))
@@ -124,7 +124,7 @@ class ProductControllerTest {
         ProductGetDto productGetDto = ProductFixture.gimmeSingleProductGetDto();
         Product product = ProductFixture.gimmeSingleProduct();
 
-        given(findProductByIdInputPort.findById(productGetDto.getId())).willReturn(product);
+        given(findProductByIdInputPort.execute(productGetDto.getId())).willReturn(product);
         given(productFactories.buildSingleResponse(product, product.getId())).willReturn(productGetDto);
 
         mockMvc.perform(get("/api/v1/products/1"))

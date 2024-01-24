@@ -21,7 +21,7 @@ public class ExceptionController {
         ExceptionDto response = new ExceptionDto();
         response.setErrorMessage(ex.getErrorMessage());
         response.setHttpStatus(ex.getHttpStatus());
-
+        response.setFieldErrors(ex.getCapturedErrors());
         return ResponseEntity.status(response.getHttpStatus().value()).body(response);
     }
 

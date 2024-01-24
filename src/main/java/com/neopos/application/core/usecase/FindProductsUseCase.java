@@ -18,7 +18,7 @@ public class FindProductsUseCase implements FindProductsInputPort {
     }
 
     @Override
-    public List<Product> findAll(int pageNumber, int pageSize) {
+    public List<Product> execute(int pageNumber, int pageSize) {
         int queryPageNumber;
         double totalRecords = countProductsOutputPort.count();
         int totalPages = (int) Math.ceil(totalRecords / pageSize);

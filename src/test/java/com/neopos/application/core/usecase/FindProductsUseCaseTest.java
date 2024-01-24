@@ -4,8 +4,6 @@ import com.neopos.application.core.domain.Product;
 import com.neopos.application.ports.output.CountProductsOutputPort;
 import com.neopos.application.ports.output.FindProductsOutputPort;
 import com.neopos.fixture.ProductFixture;
-import lombok.extern.slf4j.Slf4j;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -45,7 +43,7 @@ class FindProductsUseCaseTest {
         given(countProductsOutputPort.count()).willReturn(10);
         given(findProductsOutputPort.findAll(queryPageNumber - 1, queryPageSize)).willReturn(products);
 
-        List<Product> response = findProductsUseCase.findAll(queryPageNumber, queryPageSize);
+        List<Product> response = findProductsUseCase.execute(queryPageNumber, queryPageSize);
 
         assertNotNull(response);
         assertEquals(response.size(), products.size());
@@ -65,7 +63,7 @@ class FindProductsUseCaseTest {
         // total pages - 1. Which means, 0.
         given(findProductsOutputPort.findAll(0, queryPageSize)).willReturn(products);
 
-        List<Product> response = findProductsUseCase.findAll(queryPageNumber, queryPageSize);
+        List<Product> response = findProductsUseCase.execute(queryPageNumber, queryPageSize);
 
         assertNotNull(response);
         assertEquals(response.size(), products.size());

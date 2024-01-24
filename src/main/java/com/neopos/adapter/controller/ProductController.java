@@ -21,7 +21,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/v1/products")
@@ -32,9 +34,10 @@ public class ProductController {
     private final InsertProductInputPort insertProductInputPort;
     private final FindProductsInputPort findProductsInputPort;
     private final FindProductByIdInputPort findProductByIdInputPort;
-
     private final ProductFactories productFactories;
+
     public static final String REQUEST_BASE_PATH = "api/v1/products";
+    public final Map<String, String> capturedErrors = new LinkedHashMap<>();
 
     @PostMapping
     public ResponseEntity<Void> insertProduct(@Validated @RequestBody ProductPostRequestDto dto) {
@@ -42,7 +45,7 @@ public class ProductController {
         Product product = productFactories.buildDomainObject(dto);
 
         log.info("Init insert product operation");
-        insertProductInputPort.insert(product);
+        insertProductInputPort.execute(product, capturedErrors);
         return ResponseEntity.noContent().build();
     }
 
@@ -54,7 +57,7 @@ public class ProductController {
         int queryPageNumber = Pagination.validatePageNumber(pageNumber);
         int queryPageSize = Pagination.validatePageSize(pageSize);
 
-        final List<Product> products = findProductsInputPort.findAll(queryPageNumber, queryPageSize);
+        final List<Product> products = findProductsInputPort.execute(queryPageNumber, queryPageSize);
         final Response<List<ProductGetDto>> response = productFactories.buildPagedResponse(products, queryPageNumber, queryPageSize);
 
         return ResponseEntity.ok(response);
@@ -62,7 +65,7 @@ public class ProductController {
 
     @GetMapping("/{productId}")
     public ResponseEntity<ProductGetDto> findProductById(@PathVariable("productId") String id) {
-        final Product product = findProductByIdInputPort.findById(id);
+        final Product product = findProductByIdInputPort.execute(id);
         final ProductGetDto response = productFactories.buildSingleResponse(product, id);
 
         return ResponseEntity.ok(response);

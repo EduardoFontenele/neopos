@@ -12,7 +12,7 @@ public class FindProductByIdUseCase implements FindProductByIdInputPort {
     }
 
     @Override
-    public Product findById(String id) {
+    public Product execute(String id) {
         return findProductByIdOutputPort.findById(id);
     }
 }

@@ -15,10 +15,12 @@ import java.util.Map;
 public class BusinessLogicException extends RuntimeException {
     private String errorMessage;
     private HttpStatus httpStatus;
+    private Map<String, String> capturedErrors;
 
-    public BusinessLogicException(ExceptionsTable exceptionsTable) {
+    public BusinessLogicException(ExceptionsTable exceptionsTable, Map<String, String> capturedErrors) {
         super();
         this.errorMessage = exceptionsTable.getMessage();
         this.httpStatus = exceptionsTable.getHttpStatus();
+        this.capturedErrors = capturedErrors;
     }
 }

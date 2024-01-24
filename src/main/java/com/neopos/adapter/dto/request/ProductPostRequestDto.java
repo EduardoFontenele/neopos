@@ -17,16 +17,7 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 @RequiredArgsConstructor
 public class ProductPostRequestDto {
-    @NotEmpty(message = "Name cannot be empty")
-    @Size(min = 3, max = 255, message = "Name cannot exceed 255 characters nor be less than 3")
     private String name;
-
-    @NotEmpty(message = "Description cannot be empty")
-    @Size(min = 10, max = 500, message = "Description cannot exceed 500 characters nor be less than 10")
     private String description;
-
-    @DecimalMin(value = "0.01", message = "Price must be greater than or equal to 0.01")
-    @DecimalMax(value = "999999.99", message = "Price must be less than or equal to 999999.99")
-    @Digits(integer = 7, fraction = 2, message = "Price must have up to 7 digits in total, with up to 2 decimal places")
     private BigDecimal price;
 }

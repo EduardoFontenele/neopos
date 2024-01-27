@@ -1,9 +1,7 @@
 package com.neopos.config;
 
-import com.neopos.adapter.service.CountProductsAdapter;
-import com.neopos.adapter.service.FindProductByIdAdapter;
-import com.neopos.adapter.service.FindProductsAdapter;
-import com.neopos.adapter.service.InsertProductAdapter;
+import com.neopos.adapter.service.*;
+import com.neopos.application.core.usecase.DeleteProductByIdUseCase;
 import com.neopos.application.core.usecase.FindProductByIdUseCase;
 import com.neopos.application.core.usecase.FindProductsUseCase;
 import com.neopos.application.core.usecase.InsertProductUseCase;
@@ -26,5 +24,10 @@ public class ProductBeansConfiguration {
     @Bean
     public FindProductByIdUseCase findProductByIdUseCase(FindProductByIdAdapter findProductByIdAdapter) {
         return new FindProductByIdUseCase(findProductByIdAdapter);
+    }
+
+    @Bean
+    public DeleteProductByIdUseCase deleteProductByIdUseCase(DeleteProductByIdAdapter deleteProductByIdAdapter) {
+        return new DeleteProductByIdUseCase(deleteProductByIdAdapter);
     }
 }

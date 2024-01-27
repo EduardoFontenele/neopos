@@ -6,6 +6,7 @@ import com.neopos.adapter.dto.response.Response;
 import com.neopos.adapter.utils.Pagination;
 import com.neopos.adapter.utils.ProductFactories;
 import com.neopos.application.core.domain.Product;
+import com.neopos.application.ports.input.DeleteProductByIdInputPort;
 import com.neopos.application.ports.input.FindProductByIdInputPort;
 import com.neopos.application.ports.input.FindProductsInputPort;
 import com.neopos.application.ports.input.InsertProductInputPort;
@@ -13,13 +14,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -30,21 +25,18 @@ import java.util.Map;
 @RequiredArgsConstructor
 @Log4j2
 public class ProductController {
-
     private final InsertProductInputPort insertProductInputPort;
     private final FindProductsInputPort findProductsInputPort;
     private final FindProductByIdInputPort findProductByIdInputPort;
+    private final DeleteProductByIdInputPort deleteProductByIdInputPort;
     private final ProductFactories productFactories;
 
     public static final String REQUEST_BASE_PATH = "api/v1/products";
     public final Map<String, String> capturedErrors = new LinkedHashMap<>();
 
     @PostMapping
-    public ResponseEntity<Void> insertProduct(@Validated @RequestBody ProductPostRequestDto dto) {
-        log.info("Init DTO mapping to domain object");
+    public ResponseEntity<Void> insertProduct(@RequestBody ProductPostRequestDto dto) {
         Product product = productFactories.buildDomainObject(dto);
-
-        log.info("Init insert product operation");
         insertProductInputPort.execute(product, capturedErrors);
         return ResponseEntity.noContent().build();
     }
@@ -69,5 +61,11 @@ public class ProductController {
         final ProductGetDto response = productFactories.buildSingleResponse(product, id);
 
         return ResponseEntity.ok(response);
+    }
+
+    @DeleteMapping("/{productId}")
+    public ResponseEntity<Void> deleteProductById(@PathVariable("productId") String id) {
+        deleteProductByIdInputPort.execute(id, capturedErrors);
+        return ResponseEntity.ok().build();
     }
 }

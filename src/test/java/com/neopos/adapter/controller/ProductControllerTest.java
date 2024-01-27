@@ -5,6 +5,8 @@ import com.neopos.adapter.dto.request.ProductPostRequestDto;
 import com.neopos.adapter.dto.response.Meta;
 import com.neopos.adapter.dto.response.ProductGetDto;
 import com.neopos.adapter.dto.response.Response;
+import com.neopos.adapter.exception.BusinessLogicException;
+import com.neopos.adapter.exception.ExceptionsTable;
 import com.neopos.adapter.utils.ProductFactories;
 import com.neopos.application.core.domain.Product;
 import com.neopos.application.ports.input.FindProductByIdInputPort;
@@ -36,7 +38,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @WebMvcTest(ProductController.class)
 class ProductControllerTest {
-
     @MockBean
     private InsertProductInputPort insertProductInputPort;
     @MockBean
@@ -63,16 +64,11 @@ class ProductControllerTest {
     }
 
     @Test
-    @DisplayName("Given an invalid input, when insertProduct method is called, should return 400")
+    @DisplayName("Given no body in the request, when insertProduct method is called, should return 400")
     public void whenProvidedInvalidInput_thenShouldReturn404() throws Exception {
-        ProductPostRequestDto dto = ProductPostRequestDtoFixture.gimmeSingleProductPostDto();
-        dto.setName("");
-        String json = objectMapper.writeValueAsString(dto);
-
         mockMvc.perform(post("/api/v1/products")
                         .accept(MediaType.APPLICATION_JSON)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(json))
+                        .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().is4xxClientError());
     }
 

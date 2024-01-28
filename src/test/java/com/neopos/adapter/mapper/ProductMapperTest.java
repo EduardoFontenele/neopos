@@ -1,7 +1,7 @@
 package com.neopos.adapter.mapper;
 
-import com.neopos.adapter.dto.request.ProductPostRequestDto;
-import com.neopos.adapter.dto.response.ProductGetDto;
+import com.neopos.adapter.dto.request.ProductRequestDto;
+import com.neopos.adapter.dto.response.ProductResponseDto;
 import com.neopos.adapter.entity.ProductEntity;
 import com.neopos.application.core.domain.Product;
 import org.junit.jupiter.api.DisplayName;
@@ -41,7 +41,7 @@ class ProductMapperTest {
     @DisplayName("Mapping ProductPostRequestDto to Product")
     void mapProductPostRequestDtoToProduct() {
         // Arrange
-        ProductPostRequestDto dto = new ProductPostRequestDto();
+        ProductRequestDto dto = new ProductRequestDto();
         dto.setName("Example Product");
         dto.setDescription("This is a sample product.");
         dto.setPrice(new BigDecimal("19.99"));
@@ -88,14 +88,14 @@ class ProductMapperTest {
         product.setPrice(new BigDecimal("19.99"));
 
         // Act
-        ProductGetDto productGetDto = productMapper.toGetDto(product);
+        ProductResponseDto productResponseDto = productMapper.toGetDto(product);
 
         // Assert
-        assertThat(productGetDto).isNotNull();
-        assertThat(productGetDto.getId()).isEqualTo(product.getId());
-        assertThat(productGetDto.getName()).isEqualTo(product.getName());
-        assertThat(productGetDto.getDescription()).isEqualTo(product.getDescription());
-        assertThat(productGetDto.getPrice()).isEqualTo(product.getPrice());
+        assertThat(productResponseDto).isNotNull();
+        assertThat(productResponseDto.getId()).isEqualTo(product.getId());
+        assertThat(productResponseDto.getName()).isEqualTo(product.getName());
+        assertThat(productResponseDto.getDescription()).isEqualTo(product.getDescription());
+        assertThat(productResponseDto.getPrice()).isEqualTo(product.getPrice());
     }
 
     @Test
@@ -117,18 +117,18 @@ class ProductMapperTest {
         List<Product> productList = Arrays.asList(product1, product2);
 
         // Act
-        List<ProductGetDto> productGetDtoList = productMapper.toGetDtoList(productList);
+        List<ProductResponseDto> productResponseDtoList = productMapper.toGetDtoList(productList);
 
         // Assert
-        assertThat(productGetDtoList).isNotNull().hasSize(2);
-        assertThat(productGetDtoList.get(0).getId()).isEqualTo(product1.getId());
-        assertThat(productGetDtoList.get(0).getName()).isEqualTo(product1.getName());
-        assertThat(productGetDtoList.get(0).getDescription()).isEqualTo(product1.getDescription());
-        assertThat(productGetDtoList.get(0).getPrice()).isEqualTo(product1.getPrice());
+        assertThat(productResponseDtoList).isNotNull().hasSize(2);
+        assertThat(productResponseDtoList.get(0).getId()).isEqualTo(product1.getId());
+        assertThat(productResponseDtoList.get(0).getName()).isEqualTo(product1.getName());
+        assertThat(productResponseDtoList.get(0).getDescription()).isEqualTo(product1.getDescription());
+        assertThat(productResponseDtoList.get(0).getPrice()).isEqualTo(product1.getPrice());
 
-        assertThat(productGetDtoList.get(1).getId()).isEqualTo(product2.getId());
-        assertThat(productGetDtoList.get(1).getName()).isEqualTo(product2.getName());
-        assertThat(productGetDtoList.get(1).getDescription()).isEqualTo(product2.getDescription());
-        assertThat(productGetDtoList.get(1).getPrice()).isEqualTo(product2.getPrice());
+        assertThat(productResponseDtoList.get(1).getId()).isEqualTo(product2.getId());
+        assertThat(productResponseDtoList.get(1).getName()).isEqualTo(product2.getName());
+        assertThat(productResponseDtoList.get(1).getDescription()).isEqualTo(product2.getDescription());
+        assertThat(productResponseDtoList.get(1).getPrice()).isEqualTo(product2.getPrice());
     }
 }

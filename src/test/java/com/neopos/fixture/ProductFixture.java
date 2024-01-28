@@ -1,6 +1,6 @@
 package com.neopos.fixture;
 
-import com.neopos.adapter.dto.response.ProductGetDto;
+import com.neopos.adapter.dto.response.ProductResponseDto;
 import com.neopos.application.core.domain.Product;
 
 import java.math.BigDecimal;
@@ -33,30 +33,30 @@ public class ProductFixture {
 
         return productList;
     }
-    public static ProductGetDto gimmeSingleProductGetDto() {
-        ProductGetDto productGetDto = new ProductGetDto();
-        productGetDto.setId("1");
-        productGetDto.setName("Example Product");
-        productGetDto.setPrice(new BigDecimal("19.99"));
-        productGetDto.setDescription("This is a sample product.");
-        productGetDto.setLinks(new HashMap<>());
-        return productGetDto;
+    public static ProductResponseDto gimmeSingleProductGetDto() {
+        ProductResponseDto productResponseDto = new ProductResponseDto();
+        productResponseDto.setId("1");
+        productResponseDto.setName("Example Product");
+        productResponseDto.setPrice(new BigDecimal("19.99"));
+        productResponseDto.setDescription("This is a sample product.");
+        productResponseDto.setLinks(new HashMap<>());
+        return productResponseDto;
     }
 
-    public static List<ProductGetDto> gimmeProductGetDtoList() {
-        List<ProductGetDto> productGetDtoList = new ArrayList<>();
+    public static List<ProductResponseDto> gimmeProductGetDtoList() {
+        List<ProductResponseDto> productResponseDtoList = new ArrayList<>();
 
         for (int i = 0; i < 3; i++) {
-            ProductGetDto productGetDto = new ProductGetDto();
-            productGetDto.setId(String.valueOf(i + 1));
-            productGetDto.setName("Product " + (i + 1));
-            productGetDto.setPrice(new BigDecimal("29.99"));
-            productGetDto.setDescription("Description for Product " + (i + 1));
-            productGetDto.setLinks(LinksFixture.gimmeSinglePageWithThreeProductsLink());
-            productGetDtoList.add(productGetDto);
+            ProductResponseDto productResponseDto = new ProductResponseDto();
+            productResponseDto.setId(String.valueOf(i + 1));
+            productResponseDto.setName("Product " + (i + 1));
+            productResponseDto.setPrice(new BigDecimal("29.99"));
+            productResponseDto.setDescription("Description for Product " + (i + 1));
+            productResponseDto.setLinks(LinksFixture.gimmeSinglePageWithThreeProductsLink());
+            productResponseDtoList.add(productResponseDto);
         }
 
-        return productGetDtoList;
+        return productResponseDtoList;
     }
 
 }

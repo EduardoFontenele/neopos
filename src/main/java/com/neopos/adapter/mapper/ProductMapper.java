@@ -1,7 +1,7 @@
 package com.neopos.adapter.mapper;
 
-import com.neopos.adapter.dto.request.ProductPostRequestDto;
-import com.neopos.adapter.dto.response.ProductGetDto;
+import com.neopos.adapter.dto.request.ProductRequestDto;
+import com.neopos.adapter.dto.response.ProductResponseDto;
 import com.neopos.adapter.entity.ProductEntity;
 import com.neopos.application.core.domain.Product;
 import org.mapstruct.Mapper;
@@ -23,21 +23,21 @@ public abstract class ProductMapper {
     @Mapping(source = "name", target = "name")
     @Mapping(source = "description", target = "description")
     @Mapping(source = "price", target = "price")
-    public abstract Product toDomain(ProductPostRequestDto dto);
+    public abstract Product toDomain(ProductRequestDto dto);
 
     @Mapping(source = "id", target = "id")
     @Mapping(source = "name", target = "name")
     @Mapping(source = "description", target = "description")
     @Mapping(source = "price", target = "price")
-    public abstract Product toDomain(ProductEntity dto);
+    public abstract Product toDomain(ProductEntity entity);
 
     @Mapping(source = "id", target = "id")
     @Mapping(source = "name", target = "name")
     @Mapping(source = "description", target = "description")
     @Mapping(source = "price", target = "price")
-    public abstract ProductGetDto toGetDto(Product product);
+    public abstract ProductResponseDto toGetDto(Product product);
 
-    public List<ProductGetDto> toGetDtoList(List<Product> products) {
+    public List<ProductResponseDto> toGetDtoList(List<Product> products) {
         return products.stream().map(INSTANCE::toGetDto).toList();
     }
 }

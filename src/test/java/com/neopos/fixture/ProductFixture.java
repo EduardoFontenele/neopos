@@ -37,7 +37,7 @@ public class ProductFixture {
         ProductResponseDto productResponseDto = new ProductResponseDto();
         productResponseDto.setId("1");
         productResponseDto.setName("Example Product");
-        productResponseDto.setPrice(new BigDecimal("19.99"));
+        productResponseDto.setPrice("19.99");
         productResponseDto.setDescription("This is a sample product.");
         productResponseDto.setLinks(new HashMap<>());
         return productResponseDto;
@@ -50,7 +50,7 @@ public class ProductFixture {
             ProductResponseDto productResponseDto = new ProductResponseDto();
             productResponseDto.setId(String.valueOf(i + 1));
             productResponseDto.setName("Product " + (i + 1));
-            productResponseDto.setPrice(new BigDecimal("29.99"));
+            productResponseDto.setPrice("29.99");
             productResponseDto.setDescription("Description for Product " + (i + 1));
             productResponseDto.setLinks(LinksFixture.gimmeSinglePageWithThreeProductsLink());
             productResponseDtoList.add(productResponseDto);

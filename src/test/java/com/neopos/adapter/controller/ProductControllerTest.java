@@ -10,9 +10,11 @@ import com.neopos.application.ports.input.DeleteProductByIdInputPort;
 import com.neopos.application.ports.input.FindProductByIdInputPort;
 import com.neopos.application.ports.input.FindProductsInputPort;
 import com.neopos.application.ports.input.InsertProductInputPort;
+import com.neopos.application.ports.input.UpdateProductByIdInputPort;
 import com.neopos.fixture.MetaFixture;
 import com.neopos.fixture.ProductFixture;
 import com.neopos.fixture.ProductPostRequestDtoFixture;
+import org.hibernate.sql.Update;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,7 +38,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(ProductController.class)
-@ActiveProfiles("local")
 class ProductControllerTest {
     @MockBean
     private InsertProductInputPort insertProductInputPort;
@@ -46,6 +47,8 @@ class ProductControllerTest {
     private FindProductByIdInputPort findProductByIdInputPort;
     @MockBean
     private DeleteProductByIdInputPort deleteProductByIdInputPort;
+    @MockBean
+    private UpdateProductByIdInputPort updateProductByIdInputPort;
     @MockBean
     private ProductFactories productFactories;
     @Autowired

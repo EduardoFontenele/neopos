@@ -6,13 +6,29 @@ import com.neopos.adapter.entity.ProductEntity;
 import com.neopos.application.core.domain.Product;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.mapstruct.Named;
+import org.mapstruct.Qualifier;
 import org.mapstruct.factory.Mappers;
 
+import java.math.BigDecimal;
+import java.text.NumberFormat;
+import java.util.Currency;
 import java.util.List;
+import java.util.Locale;
 
 @Mapper
 public abstract class ProductMapper {
     public static final ProductMapper INSTANCE = Mappers.getMapper(ProductMapper.class);
+
+    @Named("transformPriceIntoCurrency")
+    public String transformPrinceIntoCurrency(BigDecimal price) {
+        double value = price.doubleValue();
+        Locale brazilianLocale = new Locale("pt", "BR");
+        Currency currency = Currency.getInstance("BRL");
+        NumberFormat numberFormat = NumberFormat.getCurrencyInstance(brazilianLocale);
+        numberFormat.setCurrency(currency);
+        return numberFormat.format(value);
+    }
 
     @Mapping(source = "id", target = "id")
     @Mapping(source = "name", target = "name")
@@ -34,7 +50,7 @@ public abstract class ProductMapper {
     @Mapping(source = "id", target = "id")
     @Mapping(source = "name", target = "name")
     @Mapping(source = "description", target = "description")
-    @Mapping(source = "price", target = "price")
+    @Mapping(source = "price", target = "price", qualifiedByName = "transformPriceIntoCurrency")
     public abstract ProductResponseDto toGetDto(Product product);
 
     public List<ProductResponseDto> toGetDtoList(List<Product> products) {

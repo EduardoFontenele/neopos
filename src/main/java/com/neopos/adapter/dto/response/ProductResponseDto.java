@@ -19,6 +19,6 @@ import java.math.BigDecimal;
 public class ProductResponseDto extends ResponseWithLinks {
     private String id;
     private String name;
-    private BigDecimal price;
+    private String price;
     private String description;
 }

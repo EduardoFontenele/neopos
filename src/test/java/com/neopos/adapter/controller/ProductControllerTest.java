@@ -1,14 +1,12 @@
 package com.neopos.adapter.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.neopos.adapter.dto.request.ProductPostRequestDto;
 import com.neopos.adapter.dto.response.Meta;
-import com.neopos.adapter.dto.response.ProductGetDto;
+import com.neopos.adapter.dto.response.ProductResponseDto;
 import com.neopos.adapter.dto.response.Response;
-import com.neopos.adapter.exception.BusinessLogicException;
-import com.neopos.adapter.exception.ExceptionsTable;
 import com.neopos.adapter.utils.ProductFactories;
 import com.neopos.application.core.domain.Product;
+import com.neopos.application.ports.input.DeleteProductByIdInputPort;
 import com.neopos.application.ports.input.FindProductByIdInputPort;
 import com.neopos.application.ports.input.FindProductsInputPort;
 import com.neopos.application.ports.input.InsertProductInputPort;
@@ -21,6 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.ArrayList;
@@ -37,6 +36,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(ProductController.class)
+@ActiveProfiles("local")
 class ProductControllerTest {
     @MockBean
     private InsertProductInputPort insertProductInputPort;
@@ -44,6 +44,8 @@ class ProductControllerTest {
     private FindProductsInputPort findProductsInputPort;
     @MockBean
     private FindProductByIdInputPort findProductByIdInputPort;
+    @MockBean
+    private DeleteProductByIdInputPort deleteProductByIdInputPort;
     @MockBean
     private ProductFactories productFactories;
     @Autowired
@@ -78,9 +80,9 @@ class ProductControllerTest {
         int queryPageNumber = 1;
         int queryPageSize = 3;
         Meta meta = MetaFixture.gimmeMeta();
-        List<ProductGetDto> data = ProductFixture.gimmeProductGetDtoList();
+        List<ProductResponseDto> data = ProductFixture.gimmeProductGetDtoList();
         List<Product> productList = ProductFixture.gimmeProductList();
-        Response<List<ProductGetDto>> response = new Response<>(data, meta, new HashMap<>());
+        Response<List<ProductResponseDto>> response = new Response<>(data, meta, new HashMap<>());
 
         given(findProductsInputPort.execute(queryPageNumber, queryPageSize)).willReturn(productList);
         given(productFactories.buildPagedResponse(productList, queryPageNumber, queryPageSize)).willReturn(response);
@@ -100,7 +102,7 @@ class ProductControllerTest {
     void givenValidPageNumberAndSize_whenListAllMethodIsCalled_shouldReturn200AndPageOfProducts() throws Exception {
         int queryPageNumber = 1;
         int queryPageSize = 3;
-        Response<List<ProductGetDto>> response = new Response<>(new ArrayList<>(), new Meta(), new HashMap<>());
+        Response<List<ProductResponseDto>> response = new Response<>(new ArrayList<>(), new Meta(), new HashMap<>());
 
         given(findProductsInputPort.execute(queryPageNumber, queryPageSize)).willReturn(new ArrayList<>());
         given(productFactories.buildPagedResponse(new ArrayList<>(), queryPageNumber, queryPageSize)).willReturn(response);
@@ -117,14 +119,14 @@ class ProductControllerTest {
     @Test
     @DisplayName("Given valid ID, when findById called, should return 200 and a ProductGetDto")
     void givenValidId_whenFindById_thenReturnProductGetDto() throws Exception {
-        ProductGetDto productGetDto = ProductFixture.gimmeSingleProductGetDto();
+        ProductResponseDto productResponseDto = ProductFixture.gimmeSingleProductGetDto();
         Product product = ProductFixture.gimmeSingleProduct();
 
-        given(findProductByIdInputPort.execute(productGetDto.getId())).willReturn(product);
-        given(productFactories.buildSingleResponse(product, product.getId())).willReturn(productGetDto);
+        given(findProductByIdInputPort.execute(productResponseDto.getId(), new HashMap<>())).willReturn(product);
+        given(productFactories.buildSingleResponse(product, product.getId())).willReturn(productResponseDto);
 
         mockMvc.perform(get("/api/v1/products/1"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.id", is(productGetDto.getId())));
+                .andExpect(jsonPath("$.id", is(productResponseDto.getId())));
     }
 }

@@ -16,7 +16,7 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 @ToString
 @JsonPropertyOrder({"id", "name", "price", "description", "links"})
-public class ProductGetDto extends ResponseWithLinks {
+public class ProductResponseDto extends ResponseWithLinks {
     private String id;
     private String name;
     private BigDecimal price;

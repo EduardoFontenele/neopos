@@ -5,6 +5,7 @@ import com.neopos.adapter.exception.BusinessLogicException;
 import com.neopos.adapter.exception.ExceptionsTable;
 import com.neopos.adapter.mapper.ProductMapper;
 import com.neopos.adapter.repository.ProductRepository;
+import com.neopos.adapter.utils.ProductFactories;
 import com.neopos.application.core.domain.Product;
 import com.neopos.application.ports.output.InsertProductOutputPort;
 import lombok.RequiredArgsConstructor;
@@ -20,7 +21,7 @@ import java.util.Map;
 public class InsertProductAdapter implements InsertProductOutputPort {
 
     private final ProductRepository productRepository;
-    private final ProductMapper productMapper = ProductMapper.INSTANCE;
+    private final ProductFactories productFactories;
 
     @Override
     public void insert(Product product, Map<String, String> capturedErrors) {
@@ -32,7 +33,7 @@ public class InsertProductAdapter implements InsertProductOutputPort {
             throw new BusinessLogicException(ExceptionsTable.FIELD_VALIDATION_ERROR, errors);
         }
 
-        ProductEntity entity = productMapper.toEntity(product);
+        ProductEntity entity = productFactories.buildEntityObject(product);
         productRepository.save(entity);
     }
 }

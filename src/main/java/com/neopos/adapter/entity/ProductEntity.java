@@ -3,10 +3,7 @@ package com.neopos.adapter.entity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.annotations.UuidGenerator;
 
 import java.math.BigDecimal;
@@ -16,6 +13,7 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
+@ToString
 public class ProductEntity {
 
     @Id

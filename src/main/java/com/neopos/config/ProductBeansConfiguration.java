@@ -1,10 +1,7 @@
 package com.neopos.config;
 
 import com.neopos.adapter.service.*;
-import com.neopos.application.core.usecase.DeleteProductByIdUseCase;
-import com.neopos.application.core.usecase.FindProductByIdUseCase;
-import com.neopos.application.core.usecase.FindProductsUseCase;
-import com.neopos.application.core.usecase.InsertProductUseCase;
+import com.neopos.application.core.usecase.*;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -29,5 +26,10 @@ public class ProductBeansConfiguration {
     @Bean
     public DeleteProductByIdUseCase deleteProductByIdUseCase(DeleteProductByIdAdapter deleteProductByIdAdapter) {
         return new DeleteProductByIdUseCase(deleteProductByIdAdapter);
+    }
+
+    @Bean
+    public UpdateProductByIdUseCase updateProductByIdUseCase(UpdateProductByIdAdapter updateProductByIdAdapter) {
+        return new UpdateProductByIdUseCase(updateProductByIdAdapter);
     }
 }

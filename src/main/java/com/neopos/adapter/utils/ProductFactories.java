@@ -1,10 +1,11 @@
 package com.neopos.adapter.utils;
 
 import com.neopos.adapter.controller.ProductController;
-import com.neopos.adapter.dto.request.ProductPostRequestDto;
+import com.neopos.adapter.dto.request.ProductRequestDto;
 import com.neopos.adapter.dto.response.Meta;
-import com.neopos.adapter.dto.response.ProductGetDto;
+import com.neopos.adapter.dto.response.ProductResponseDto;
 import com.neopos.adapter.dto.response.Response;
+import com.neopos.adapter.entity.ProductEntity;
 import com.neopos.adapter.mapper.ProductMapper;
 import com.neopos.application.core.domain.Product;
 import lombok.RequiredArgsConstructor;
@@ -22,11 +23,11 @@ public class ProductFactories {
     private final LinkBuilder linkBuilder;
     private final ProductMetaBuilder productMetaBuilder;
 
-    public Response<List<ProductGetDto>> buildPagedResponse(List<Product> products, int queryPageNumber, int queryPageSize) {
+    public Response<List<ProductResponseDto>> buildPagedResponse(List<Product> products, int queryPageNumber, int queryPageSize) {
         Meta meta;
-        List<ProductGetDto> data;
+        List<ProductResponseDto> data;
         Map<String, String> links;
-        Response<List<ProductGetDto>> response;
+        Response<List<ProductResponseDto>> response;
 
         if(products.isEmpty()) {
             data = new ArrayList<>();
@@ -43,13 +44,21 @@ public class ProductFactories {
         return response;
     }
 
-    public ProductGetDto buildSingleResponse(Product product, String id) {
-        ProductGetDto response = productMapper.toGetDto(product);
+    public ProductResponseDto buildSingleResponse(Product product, String id) {
+        ProductResponseDto response = productMapper.toGetDto(product);
         response.setLinks(linkBuilder.buildSelfLink(ProductController.REQUEST_BASE_PATH, id));
         return response;
     }
 
-    public Product buildDomainObject(ProductPostRequestDto dto) {
+    public Product buildDomainObject(ProductRequestDto dto) {
         return productMapper.toDomain(dto);
+    }
+
+    public Product buildDomainObject(ProductEntity entity) {
+        return productMapper.toDomain(entity);
+    }
+
+    public ProductEntity buildEntityObject(Product product) {
+        return productMapper.toEntity(product);
     }
 }

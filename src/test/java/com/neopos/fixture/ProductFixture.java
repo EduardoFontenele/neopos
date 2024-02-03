@@ -1,6 +1,7 @@
 package com.neopos.fixture;
 
 import com.neopos.adapter.dto.response.ProductResponseDto;
+import com.neopos.adapter.entity.ProductEntity;
 import com.neopos.application.core.domain.Product;
 
 import java.math.BigDecimal;
@@ -37,7 +38,7 @@ public class ProductFixture {
         ProductResponseDto productResponseDto = new ProductResponseDto();
         productResponseDto.setId("1");
         productResponseDto.setName("Example Product");
-        productResponseDto.setPrice("19.99");
+        productResponseDto.setPrice(new BigDecimal("19.99"));
         productResponseDto.setDescription("This is a sample product.");
         productResponseDto.setLinks(new HashMap<>());
         return productResponseDto;
@@ -50,7 +51,7 @@ public class ProductFixture {
             ProductResponseDto productResponseDto = new ProductResponseDto();
             productResponseDto.setId(String.valueOf(i + 1));
             productResponseDto.setName("Product " + (i + 1));
-            productResponseDto.setPrice("29.99");
+            productResponseDto.setPrice(new BigDecimal("29.99"));
             productResponseDto.setDescription("Description for Product " + (i + 1));
             productResponseDto.setLinks(LinksFixture.gimmeSinglePageWithThreeProductsLink());
             productResponseDtoList.add(productResponseDto);
@@ -59,4 +60,12 @@ public class ProductFixture {
         return productResponseDtoList;
     }
 
+    public static ProductEntity gimmeSingleProductEntity() {
+        ProductEntity product = new ProductEntity();
+        product.setId("1");
+        product.setName("Example Product");
+        product.setDescription("This is a sample product.");
+        product.setPrice(new BigDecimal("19.99"));
+        return product;
+    }
 }

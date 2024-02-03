@@ -23,16 +23,12 @@ public class DeleteProductByIdAdapter implements DeleteProductByIdOutputPort {
         if(!capturedErrors.isEmpty()) {
             Map<String, String> errors = new LinkedHashMap<>(capturedErrors);
             capturedErrors.clear();
-
-            log.info("Exception found - ID with value {} is invalid", id);
             throw new BusinessLogicException(ExceptionsTable.FIELD_VALIDATION_ERROR, errors);
         }
 
-        if(repository.findById(id).isEmpty()) {
+        if(!repository.existsById(id)) {
             Map<String, String> errors = new LinkedHashMap<>();
             errors.put("id", String.format("Product with ID %s is not present", id));
-
-            log.info("Exception found - product ID with value {} is not present", id);
             throw new BusinessLogicException(ExceptionsTable.RESOURCE_NOT_FOUND, errors);
         }
 

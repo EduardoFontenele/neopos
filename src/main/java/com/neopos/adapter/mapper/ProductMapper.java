@@ -20,16 +20,6 @@ import java.util.Locale;
 public abstract class ProductMapper {
     public static final ProductMapper INSTANCE = Mappers.getMapper(ProductMapper.class);
 
-    @Named("transformPriceIntoCurrency")
-    public String transformPrinceIntoCurrency(BigDecimal price) {
-        double value = price.doubleValue();
-        Locale brazilianLocale = new Locale("pt", "BR");
-        Currency currency = Currency.getInstance("BRL");
-        NumberFormat numberFormat = NumberFormat.getCurrencyInstance(brazilianLocale);
-        numberFormat.setCurrency(currency);
-        return numberFormat.format(value);
-    }
-
     @Mapping(source = "id", target = "id")
     @Mapping(source = "name", target = "name")
     @Mapping(source = "description", target = "description")
@@ -50,7 +40,7 @@ public abstract class ProductMapper {
     @Mapping(source = "id", target = "id")
     @Mapping(source = "name", target = "name")
     @Mapping(source = "description", target = "description")
-    @Mapping(source = "price", target = "price", qualifiedByName = "transformPriceIntoCurrency")
+    @Mapping(source = "price", target = "price")
     public abstract ProductResponseDto toGetDto(Product product);
 
     public List<ProductResponseDto> toGetDtoList(List<Product> products) {

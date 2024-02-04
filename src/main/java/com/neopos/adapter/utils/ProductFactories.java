@@ -19,7 +19,7 @@ import java.util.Map;
 @Service
 @RequiredArgsConstructor
 public class ProductFactories {
-    private final ProductMapper productMapper = ProductMapper.INSTANCE;
+    private final ProductMapper productMapper;
     private final LinkBuilder linkBuilder;
     private final ProductMetaBuilder productMetaBuilder;
 

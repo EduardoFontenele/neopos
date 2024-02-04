@@ -18,7 +18,7 @@ import java.util.Map;
 public class FindProductByIdAdapter implements FindProductByIdOutputPort {
 
     private final ProductRepository productRepository;
-    private final ProductMapper productMapper = ProductMapper.INSTANCE;
+    private final ProductMapper productMapper;
 
     @Override
     public Product findById(String id, Map<String, String> capturedErrors) {

@@ -5,6 +5,7 @@ import com.neopos.adapter.mapper.ProductMapper;
 import com.neopos.adapter.repository.ProductRepository;
 import com.neopos.application.core.domain.Product;
 import com.neopos.fixture.ProductEntityFixture;
+import com.neopos.fixture.ProductFixture;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -41,22 +42,22 @@ class FindProductsAdapterTest {
     void givenValidPageNumberPageSize_andElementsCountGreaterThanZero_shouldReturnListOfProducts() {
         int pageNumber = 0;
         int pageSize = 3;
-        List<ProductEntity> productEntityList = ProductEntityFixture.gimmeProductEntityList();
-        PageRequest pageRequest = PageRequest.of(pageNumber, pageSize);
-        Page<ProductEntity> productEntityPage = new PageImpl<>(productEntityList, pageRequest, productEntityList.size());
+        final List<ProductEntity> productEntityList = ProductEntityFixture.gimmeProductEntityList();
+        final PageRequest pageRequest = PageRequest.of(pageNumber, pageSize);
+        final Page<ProductEntity> productEntityPage = new PageImpl<>(productEntityList, pageRequest, productEntityList.size());
+        final List<Product> products = ProductFixture.gimmeProductList();
 
-        /*
         given(productRepository.count()).willReturn((long) productEntityList.size());
         given(productRepository.findAll(pageRequest)).willReturn(productEntityPage);
-        */
-        when(productRepository.count()).thenReturn((long) productEntityList.size());
-        when(productRepository.findAll(pageRequest)).thenReturn(productEntityPage);
+        for(int i = 0; i < productEntityPage.getTotalElements(); i++) {
+            given(productMapper.toDomain(productEntityPage.toList().get(i))).willReturn(products.get(i));
+        }
 
         List<Product> response = findProductsAdapter.findAll(pageNumber, pageSize);
 
         assertNotNull(response);
-        assertEquals(response.size(), productEntityList.size());
-        assertEquals(response.get(0).getId(), productEntityList.get(0).getId());
+        assertEquals(3, response.size());
+        assertEquals(productEntityList.get(0).getId(), response.get(0).getId());
     }
 
     @Test

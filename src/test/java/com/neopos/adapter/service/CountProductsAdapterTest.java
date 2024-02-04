@@ -1,6 +1,7 @@
 package com.neopos.adapter.service;
 
 import com.neopos.adapter.repository.ProductRepository;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -20,6 +21,7 @@ class CountProductsAdapterTest {
     private CountProductsAdapter countProductsAdapter;
 
     @Test
+    @DisplayName("Repository's count method should return a long")
     void count_ShouldReturnProductCountFromRepository() {
         given(productRepository.count()).willReturn(5L);
 

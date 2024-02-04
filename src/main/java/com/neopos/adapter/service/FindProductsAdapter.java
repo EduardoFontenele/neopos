@@ -18,7 +18,7 @@ import java.util.List;
 public class FindProductsAdapter implements FindProductsOutputPort {
 
     private final ProductRepository productRepository;
-    private final ProductMapper productMapper = ProductMapper.INSTANCE;
+    private final ProductMapper productMapper;
 
 
     @Override

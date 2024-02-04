@@ -45,10 +45,9 @@ public class InsertProductUseCase implements InsertProductInputPort, Serializabl
             capturedErrors.put("price", ValidationMessages.PRICE_RANGE_ERROR);
         } else {
             String[] priceParts = price.toString().split("\\.");
-            int integerDigits = priceParts[0].length();
             int decimalDigits = priceParts.length > 1 ? priceParts[1].length() : 0;
 
-            if (integerDigits > 7 || decimalDigits > 2) {
+            if (decimalDigits > 2) {
                 capturedErrors.put("price", ValidationMessages.PRICE_DIGIT_LIMIT_ERROR);
             }
         }
